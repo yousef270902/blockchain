@@ -1,35 +1,55 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>READ FROM SMART CONTRACT</title>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.2.7-rc.0/web3.min.js"></script>
-    <style>
-        body {
-            background-color: palevioletred;
-            font-size: 33px;
-            text-align: center;
-        }
-        button {
-            background-color: aquamarine;
-            font-size: 33px;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-        }
-    </style>
-</head>
-<body>
-    <button onclick="accessToMetamask()">donate now</button> <br>
-    <br>
-</body>
-<script>
-        
-     
-    let account;
-    const accessToMetamask = async () => {
-        if(window.ethereum !== "undefined") {
-            const accounts = await ethereum.request({ method: "eth_requestAccounts"});
-            account = accounts[0];
-             
-        }
-    }    
-</script>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>subscription page</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <script type="text/javascript">
+            (function(d, t) {
+                var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+                v.onload = function() {
+                  window.voiceflow.chat.load({
+                    verify: { projectID: '65e335035671df3be500c724' },
+                    url: 'https://general-runtime.voiceflow.com',
+                    versionID: 'production'
+                  });
+                }
+                v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+            })(document, 'script');
+          </script>
+   <div class="container">
+   <div class="col-1">
+   <img src="image/logo.png"> <ul>
+    <li> <img src="image/icon.png" >A larger audience</li>
+    <li> <img src="image/icon.png" >More privileges than the ordinary ones</li>
+    <li> <img src="image/icon.png" > If the campaign is far from its target fund, It will make it viral to give it a push.</li>
+   </ul>
+ </div>
+<div class="col-2">
+    <h2>
+        <img src="image/icon.png">Choose your plan</h2>
+        <form>
+            <label for="free">
+                <input type="radio" name="plans" id="free">
+                <span>Free</span> NO LIMIT
+            </label>
+            
+            <label for="paid">
+                <input type="radio" name="plans" id="paid">
+                <span>$15<small>/MONTH</small></span> RENEWED EVERY MONTH
+            </label>
+          <br>
+          <p>YOUR NAME</p>
+          <input type="text" placeholder="Enter Your Name">
+          <p>email address</p>
+          <input type="email" placeholder="Enter your email address">
+          <button type="submit">CONFIRM</button>
+
+        </form>
+ </div>
+</div>
+
+    </body>
 </html>
