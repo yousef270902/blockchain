@@ -108,7 +108,7 @@
            
         </div>
       </div>
-    <script src="admin.js"></script>
+    <script src="../scripts/admin.js"></script>
      
       <?php require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/control.php");?>
 </body>
