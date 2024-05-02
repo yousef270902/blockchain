@@ -52,14 +52,15 @@
   <tbody> 
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
     <tr>
+    <form method="post">
       <th scope="row"><input value="<?php echo $row["id"];?>" readonly name="id"></th>
       <td><input value="<?php echo $row["img"];?>" name="image"><img src="../image/<?php echo $row["img"];?>" class="card-img-top" alt="..." style="width:50%;" name="image"></center></td>
-      <td><input type="text"     value="<?php echo $row["Title"];?>" class="input" name="title" readonly id="title"></td>
-      <td><input type="text"     value="<?php echo $row["Description"];?>" name="description"readonly id="description"></td>
-      <td><input type="text"     value="<?php echo $row["Target_Fund"];?>" name="target"readonly id="target"></td>
-      <td><input type="text"     value="<?php echo $row["end_date"];?>" name="end" readonly id="end"></td>
-      <td><input type="text"     value="<?php echo $row["metamask"];?>" name="meta" readonly></td>
-      <td><input type="submit" class="btn btn-primary" name="submit" value="upload"></td>
+      <td><input type="text" value="<?php echo $row["Title"];?>" class="input" name="title" readonly id="title"></td>
+      <td><input type="text" value="<?php echo $row["Description"];?>" name="description"readonly id="description"></td>
+      <td><input type="text" value="<?php echo $row["Target_Fund"];?>" name="target"readonly id="target"></td>
+      <td><input type="text" value="<?php echo $row["end_date"];?>" name="end" readonly id="end"></td>
+      <td><input type="text" value="<?php echo $row["metamask"];?>" name="meta" readonly></td>
+      <td><input type="submit" class="btn btn-primary"   name="submit" value="upload"></td>
       <td> <input type="submit"class="btn btn-primary" name="submit" value="deny"></td>
       <td> <a href="mailto:<?php echo $row["email"];?>" class="btn btn-primary"><i class="fa fa-envelope"></i></a></td>
       <td><button onclick="connectmetamask()" class="btn btn-primary">compile</button></td>
@@ -68,6 +69,7 @@
       <td><button onclick="senddata()" class="btn btn-primary">send data</button></td>!-->
       
     </tr>
+    </form>
     <?php } ?>
   </tbody>
    
