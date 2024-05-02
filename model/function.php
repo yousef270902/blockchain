@@ -74,30 +74,28 @@ class data
 
 
   }
-  public function adding($file,$Title,$Description,$target,$Enddate,$Metamask)
+  public function adding($id,$file,$Title,$Description,$target,$Enddate,$Metamask)
   {
+     
     require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
     require("algorithms.php");
- 
     $titleenc = encryptthis($Title, $key);
     $descenc = encryptthis($Description, $key);
-    $sql = "INSERT INTO `campaign`(`id`, `img`, `title`, `description`, `TargetFund`, `endDate`, `meta`)
-            VALUES (NULL, '$file', '$titleenc', '$descenc', '$target', '$Enddate', '$Metamask')";
+    $s = "SELECT * FROM campaign WHERE id='$id'";
+$r = mysqli_query($conn, $s);
+
+if ($r && mysqli_num_rows($r) > 0) {
+    echo "<script>alert('Campaign found, do not insert it again.');</script>";
+} else {
+    $sql = "INSERT INTO campaign(id, img, title, description, TargetFund, endDate, meta)
+            VALUES ('$id', '$file', '$titleenc', '$descenc', '$target', '$Enddate', '$Metamask')";
     $result = mysqli_query($conn, $sql);
-    
-    // Redirect based on the result
     if ($result) {
-        $s = "DELETE FROM `temp` WHERE Title='$Title'";
-        $r = mysqli_query($conn, $s);
-        if ($r) {
-            echo "<script>alert('Added successfully');</script>";
-        } else {
-            echo "Deletion failed: " . mysqli_error($conn);
-        }
+        echo "<script>alert('Added successfully.');</script>";    
     } else {
         echo "Insertion failed: " . mysqli_error($conn);
     }
-    
+}
 
 
   }
