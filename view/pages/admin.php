@@ -82,7 +82,7 @@
         </form>
         <?php
     require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
-        $sql = "SELECT `userID`, `name`, `email` FROM `users` WHERE user_types=2";
+        $sql = "SELECT `userID`, `name`, `email`,`user_types` FROM `users` WHERE user_types in(2,3)";
         $result = mysqli_query($conn, $sql);
         ?>
   <center> <table class="table table-sm table-dark" style="display:none;" id="table_user">
@@ -102,14 +102,18 @@
      ?>
   <tr>
       
-      <th scope="row"><?php echo $row["userID"];?></th>
-      <td> <?php echo $row["name"];?></td>
+      <td scope="row"><?php echo $row["userID"];?></td>
+      <td><?php echo $row["name"];?></td>
       <td><?php echo $row["email"];?></td>
-      <td> <?php echo"Donator"?>
+      <?php $role = ($row["user_types"] == 2) ? "donator" : "investor";?>
+      <td> <?php echo $role;?>
     </tr>
     <?php } ?>
   </tbody>
 </table>
+<form method="post">
+ <input type="submit" class="btn btn-outline-primary" value="send Email" name="submit">
+</form>
      </center>
            
         </div>
