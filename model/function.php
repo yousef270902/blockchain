@@ -128,6 +128,29 @@ if ($result) {
       echo "Failed: " . mysqli_error($conn);
     }
   }*/
+  public function send($message,$from)
+  {
+require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
+$sql = "SELECT  `email`,`user_types` FROM `users` WHERE user_types in(2,3)";
+$result = $conn->query($sql);
+if ($result->num_rows > 0)
+{
+while ($row = mysqli_fetch_assoc($result)) {
+        $to = $row["email"];
+        // Send email
+        error_reporting(E_ERROR | E_PARSE);
+
+        mail($to, $message, "From: $from");
+    }
+    echo "<script>alert('Emails sent successfully!');</script>";
+     
+} 
+else
+{
+    echo "<script>alert('no users found');</script>";
+}
+  
+}
 }
 
 
