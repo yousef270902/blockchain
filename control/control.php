@@ -107,6 +107,12 @@ require("C:/xampp/htdocs/INF06/FundWings_Web_App/model/function.php");
 
             }
             break;
+            case 'send Email':
+               {
+                  $message = "New Campaign available Now";
+                  $from = "admin@fundwings.com";
+                  $new->send($message,$from);
+               }
 }
 
 
