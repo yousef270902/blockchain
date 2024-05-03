@@ -90,7 +90,8 @@ require("C:/xampp/htdocs/INF06/FundWings_Web_App/model/function.php");
            $target=$_POST['target'];
            $Enddate=$_POST['end'];
            $Metamask=$_POST['meta'];
-           $new->adding($file,$Title,$Description,$target,$Enddate,$Metamask);
+           $category=$_POST['type'];
+           $new->adding($id,$file,$Title,$Description,$target,$Enddate,$Metamask,$category);
 
          }
          break;
