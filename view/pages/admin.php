@@ -29,7 +29,9 @@
     <form method="post">
     <?php
     require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
-        $sql = "SELECT * FROM `temp`";
+        $sql =  "SELECT temp.id, temp.img, temp.Title, temp.Description, temp.Target_Fund, temp.end_date, temp.metamask, temp.email, category.type
+        FROM temp
+        JOIN category ON temp.category_id = category.id ORDER BY temp.id DESC";
         $result = mysqli_query($conn, $sql);
          
         ?>
@@ -43,6 +45,7 @@
       <th scope="col">target fund</th>
       <th scope="col">end date</th>
       <th scope="col">meta mask</th>
+      <th scope="col">type</th>
       <th scope="col">upload</th>
       <th scope="col">deny</th>
       <th scope="col">mail</th>
@@ -60,6 +63,7 @@
       <td><input type="text" value="<?php echo $row["Target_Fund"];?>" name="target"readonly id="target"></td>
       <td><input type="text" value="<?php echo $row["end_date"];?>" name="end" readonly id="end"></td>
       <td><input type="text" value="<?php echo $row["metamask"];?>" name="meta" readonly></td>
+      <td><input type="text" value="<?php echo $row["type"];?>" name="type" readonly></td>
       <td><input type="submit" class="btn btn-primary"   name="submit" value="upload"></td>
       <td> <input type="submit"class="btn btn-primary" name="submit" value="deny"></td>
       <td> <a href="mailto:<?php echo $row["email"];?>" class="btn btn-primary"><i class="fa fa-envelope"></i></a></td>
