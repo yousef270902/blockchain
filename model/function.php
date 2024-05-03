@@ -58,47 +58,49 @@ if (isset($check)) {
 }
 class data
 {
-  public function review($filename,$title,$description,$targetfund,$enddate,$metamask,$addemail)
-  {
-    require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
-    $sql = "INSERT INTO `temp`(`id`, `img`, `Title`, `Description`, `Target_Fund`, `end_date`, `metamask`, `email`)
-    VALUES (NULL,'$filename', '$title', '$description', '$targetfund','$enddate','$metamask','$addemail')";
-    $result = mysqli_query($conn, $sql);
-
-    // Redirect based on the result
-    if ($result) {
-        echo "<script>alert('waiting mail for acceptance or rejection');</script>";
-    } else {
-        echo "Failed: " . mysqli_error($conn);
+    public function review($filename,$title,$description,$targetfund,$enddate,$metamask,$option,$addemail)
+    {
+      require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
+  
+      $sql = "INSERT INTO temp(id, img, Title, Description, Target_Fund, end_date, metamask,category_id, email)
+      VALUES (NULL,'$filename', '$title', '$description', '$targetfund','$enddate','$metamask','$option','$addemail')";
+  
+      $result = mysqli_query($conn, $sql);
+  
+      // Redirect based on the result
+      if ($result) {
+          echo "<script>alert('waiting mail for acceptance or rejection');</script>";
+      } else {
+          echo "Failed: " . mysqli_error($conn);
+      }
+  
+  
     }
-
-
+  
+    public function adding($id,$file,$Title,$Description,$target,$Enddate,$Metamask,$category)
+    {
+  
+      require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
+      require("algorithms.php");
+      $titleenc = encryptthis($Title, $key);
+      $descenc = encryptthis($Description, $key);
+      $s = "SELECT * FROM campaign WHERE id='$id'";
+  $r = mysqli_query($conn, $s);
+  
+  if ($r && mysqli_num_rows($r) > 0) {
+      echo "<script>alert('Campaign found, do not insert it again.');</script>";
+  } else {
+      $sql = "INSERT INTO campaign(id, img, title, description,catgory, TargetFund, endDate, meta)
+              VALUES ('$id', '$file', '$titleenc', '$descenc','$category','$target', '$Enddate', '$Metamask')";
+      $result = mysqli_query($conn, $sql);
+      if ($result) {
+          echo "<script>alert('Added successfully.');</script>";
+      } else {
+          echo "Insertion failed: " . mysqli_error($conn);
+      }
   }
-  public function adding($id,$file,$Title,$Description,$target,$Enddate,$Metamask)
-  {
-     
-    require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
-    require("algorithms.php");
-    $titleenc = encryptthis($Title, $key);
-    $descenc = encryptthis($Description, $key);
-    $s = "SELECT * FROM campaign WHERE id='$id'";
-$r = mysqli_query($conn, $s);
-
-if ($r && mysqli_num_rows($r) > 0) {
-    echo "<script>alert('Campaign found, do not insert it again.');</script>";
-} else {
-    $sql = "INSERT INTO campaign(id, img, title, description, TargetFund, endDate, meta)
-            VALUES ('$id', '$file', '$titleenc', '$descenc', '$target', '$Enddate', '$Metamask')";
-    $result = mysqli_query($conn, $sql);
-    if ($result) {
-        echo "<script>alert('Added successfully.');</script>";    
-    } else {
-        echo "Insertion failed: " . mysqli_error($conn);
+  
     }
-}
-
-
-  }
   public function deleterequest($ID)
   {
     require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
