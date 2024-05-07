@@ -19,13 +19,20 @@
 <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 <ul class="navbar-nav mr-auto mt-2 mt-lg-0c" style="padding:4px;">
 <li class="nav-item">
-<button class="nav-link" onclick="showcamp()" style="border:none; background:none;">Campaign</button>
-</li>
+<a class="nav-link" href="blockchain.html">Transaction History</a>
+</li> 
 <li class="nav-item">
-<button class="nav-link" onclick="filter()" style="border:none; background:none;">filter</button>
-</li>  
-<li class="nav-item">
-<a class="nav-link" href="campaign.php"> create Campaign</a>
+<?php
+require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
+require("C:/xampp/htdocs/INF06/FundWings_Web_App/model/Algorithms.php"); 
+?>
+<?php 
+if(isset($_GET['email'])) {
+    $email = decryptthis($_GET['email'], $key);
+    $e=encryptthis($email,$key);
+         ?>
+<a class="nav-link" href="campaign.php?email=<?php echo $e;}?>">Create Campaign</a>
+ 
 </li>
 <li class="nav-item active">
 <a class="nav-link" href="homepage.php">logout</a>
@@ -52,50 +59,49 @@ v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript
 <h4 class="text-center mb-4 campaigns-heading">Campaigns</h4>
 <label for="filter" class="mr-2">Filter by:</label>
 <form class="form-inline mb-4" method="post">
-<input type="submit" class="btn btn-outline-primary" style="margin:5px;" name="filter" value="sport"> 
-<input type="submit" class="btn btn-outline-primary" style="margin:5px;" name="filter" value="medcine"> 
-<input type="submit" class="btn btn-outline-primary" style="margin:5px;" name="filter" value="charities"> 
+<input type="submit" class="btn btn-outline-primary" style="margin:5px;" name="filter"   value="sport"> 
+<input type="submit" class="btn btn-outline-primary" style="margin:5px;" name="filter"   value="medcine"> 
+<input type="submit" class="btn btn-outline-primary" style="margin:5px;" name="filter"   value="charities"> 
+<input type="submit" class="btn btn-outline-primary" style="margin:5px;" name="filter"   value="ALL Campaigns"> 
 </form>
 <br>
  
 <br>
-<?php
-require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
-require("C:/xampp/htdocs/INF06/FundWings_Web_App/model/Algorithms.php"); 
-?>
-<?php
-$sql = "SELECT *FROM `campaign`";
-$result = mysqli_query($conn, $sql);
-?>
-<section class="row" id="campaignsContainer" style="display:none;">
-<div class="row">
-<?php while ($row = mysqli_fetch_assoc($result)) { ?>
-<div class="col-sm-4">
-<div class="card campaign-card">
-<div class="card-body">
-<center><img src="../image/<?php echo $row['img']; ?>" style="width:100%;"></center>
-<br>
-<h5 class="card-title"><?php echo decryptthis($row['title'], $key); ?></h5>
-<p class="card-text"><?php echo decryptthis($row['description'], $key); ?></p>
-<p class="card-text"><strong>category:<?php echo $row['catgory']; ?> </strong></p>
-<p class="card-text"><strong>Target Fund: <?php echo $row['TargetFund']; ?> </strong></p>
-<p class="card-text"><strong>End Date : <?php echo $row['endDate']; ?> </strong></p>
-<p class="card-text"><strong>MetaMask:<?php echo $row['meta']; ?> </strong></p>
-<a href="https://buy.stripe.com/test_5kAcQe88GfiW5qgcMM" class="btn btn-primary mt-3">Donate</a>
-<button class="btn btn-primary mt-3" onclick="connectmetamask()">meta_mask</button>
-<script src="../scripts/donation_decenterlization.js"></script>
-</div>
-</div>
-</div>     
-<?php } ?>
-</div>
-</section>
-<section class="row" id="filtercampaign" style="display:none;">
+ 
+<section class="row" id="filtercampaign">
 <?php 
 if (isset($_POST["filter"])) {
     $f = $_POST["filter"];
-    $s = "SELECT * FROM `campaign` WHERE catgory='$f'";
-    $r = mysqli_query($conn, $s);
+    switch ($f)
+    {
+           case 'ALL Campaigns':
+            {
+                $s = "SELECT * FROM `campaign`";
+                $r = mysqli_query($conn, $s);
+            }
+            break;
+           case 'sport': 
+            {
+                $s = "SELECT * FROM `campaign` WHERE catgory='sport'";
+                $r = mysqli_query($conn, $s);
+            }
+            break;
+            case 'medcine': 
+                {
+                    $s = "SELECT * FROM `campaign` WHERE catgory='medcine'";
+                    $r = mysqli_query($conn, $s);
+                }
+            break;
+           case 'charities': 
+                {
+                    $s = "SELECT * FROM `campaign` WHERE catgory='charities'";
+                    $r = mysqli_query($conn, $s);
+                }
+                    break;
+
+
+    }
+     
 
     if ($r) { // Check if query was successful
         while ($row = mysqli_fetch_assoc($r)) {
@@ -111,7 +117,12 @@ if (isset($_POST["filter"])) {
             <p class="card-text"><strong>Target Fund: <?php echo $row['TargetFund']; ?> </strong></p>
             <p class="card-text"><strong>End Date : <?php echo $row['endDate']; ?> </strong></p>
             <p class="card-text"><strong>MetaMask:<?php echo $row['meta']; ?> </strong></p>
-            <a href="https://buy.stripe.com/test_5kAcQe88GfiW5qgcMM" class="btn btn-primary mt-3">Donate</a>
+            <?php 
+if(isset($_GET['email'])) {
+    $email = decryptthis($_GET['email'], $key);
+    $e=encryptthis($email,$key);
+    echo "<a href='pay.php?id=" . decryptthis($row['title'], $key) . "&email=" . $e . "' class='btn btn-primary mt-3'>Donate</a>";
+}?>
             <button class="btn btn-primary mt-3" onclick="connectmetamask()">meta_mask</button>
             <script src="../scripts/donation_decenterlization.js"></script>
         </div>
