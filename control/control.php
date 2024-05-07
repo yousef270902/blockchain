@@ -1,7 +1,9 @@
 <?php
 require("C:/xampp/htdocs/INF06/FundWings_Web_App/model/function.php");
-    $add= new us();
-    $new= new data();
+    $add= new user();
+    $new= new wing();
+    $s= new Admin();
+    $t = new transactions();
  if (isset($_POST["submit"]))
  {
     $value=$_POST["submit"];
@@ -14,10 +16,8 @@ require("C:/xampp/htdocs/INF06/FundWings_Web_App/model/function.php");
     $email=$_POST['email'];
     $confirmpassword=$_POST['confirmpassword'];
     $user_type="1";
-    global $user;
-    $user=$username;
  if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false&&$password===$confirmpassword)
-         { $add->newuser($username,$email,$password,$user_type) ; }
+         { $new->register($username,$email,$password,$user_type) ; }
       else{
          echo"<script>alert('check input entered');</script>";
       }    
@@ -33,7 +33,7 @@ require("C:/xampp/htdocs/INF06/FundWings_Web_App/model/function.php");
     $user_type="2"; 
     $confirmpassword=$_POST['confirmpassword'];
     if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false&&$password===$confirmpassword)
-    { $add->newuser($username,$email,$password,$user_type) ; }
+    { $new->register($username,$email,$password,$user_type) ; }
  else{
     echo"<script>alert('check input entered');</script>";
  } 
@@ -47,7 +47,7 @@ require("C:/xampp/htdocs/INF06/FundWings_Web_App/model/function.php");
     $user_type="3";
     $confirmpassword=$_POST['confirmpassword']; 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false&&$password===$confirmpassword)
-         { $add->newuser($username,$email,$password,$user_type) ; }
+         { $new->register($username,$email,$password,$user_type) ; }
       else{
          echo"<script>alert('check input entered');</script>";
       } 
@@ -55,15 +55,17 @@ require("C:/xampp/htdocs/INF06/FundWings_Web_App/model/function.php");
  break;
     case 'login':
       {
-         $passwords=$_POST['passwords'];
-         $emails=$_POST['email'];
-         if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false)
-         {$add->login($emails,$passwords) ;} 
-         else{
-            echo"<script>alert('check input entered');</script>";
-         }
-
-      }
+         $passwords = $_POST['passwords'];
+         $emails = $_POST['email'];
+         if (!filter_var($emails, FILTER_VALIDATE_EMAIL) === false)
+          {
+             $add->login($emails, $passwords);
+          } 
+          else
+           {
+              echo "<script>alert('Check input entered');</script>";
+           }
+           }
      break;
      case 'Save':
       {
@@ -74,9 +76,11 @@ require("C:/xampp/htdocs/INF06/FundWings_Web_App/model/function.php");
          $targetfund=$_POST['TargetFund'];
          $enddate=$_POST['EndDate'];
          $metamask=$_POST['MetamaskAccount'];
+         $option=$_POST['options'];
          $addemail=$_POST['addemail'];
+         
          if (filter_var($targetfund, FILTER_VALIDATE_INT) === 0 || !filter_var($targetfund, FILTER_VALIDATE_INT) === false &&!filter_var($addemail, FILTER_VALIDATE_EMAIL) === false&&!filter_var($description, FILTER_SANITIZE_STRING)===false)
-         { $new->review($filename,$title,$description,$targetfund,$enddate,$metamask,$addemail); }
+         { $new->initiate_campaign($filename,$title,$description,$targetfund,$enddate,$metamask,$option,$addemail); }
       else{
          echo"<script>alert('check input entered');</script>";
       }
@@ -91,30 +95,33 @@ require("C:/xampp/htdocs/INF06/FundWings_Web_App/model/function.php");
            $Enddate=$_POST['end'];
            $Metamask=$_POST['meta'];
            $category=$_POST['type'];
-           $new->adding($id,$file,$Title,$Description,$target,$Enddate,$Metamask,$category);
+           $id=$_POST['id'];
+           $s->add_campaign($id,$file,$Title,$Description,$target,$Enddate,$Metamask,$category);
 
          }
          break;
          case 'deny';
          {
         $ID=$_POST['id'];
-        $new->deleterequest($ID);
+        $s->deleterequest($ID);
          }
          break;
-         case 'Search':
-            {
-               $search=$_POST['search'];
-               $new->searchby($search);
-
-            }
-            break;
             case 'send Email':
                {
                   $message = "New Campaign available Now";
                   $from = "admin@fundwings.com";
-                  $new->send($message,$from);
+                  $s->send($message,$from);
                }
+               break;
+               case 'Pay Now':
+                  {
+                    $campaigns=$_POST['campaign'];
+                    $amounts=$_POST['amount'];
+                    $t->process_transaction($amounts,$campaigns);
+                  }
+                  break;
 }
+
 
 
  }
