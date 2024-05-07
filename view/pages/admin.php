@@ -29,7 +29,9 @@
     <form method="post">
     <?php
     require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
-        $sql = "SELECT * FROM `temp`";
+        $sql =  "SELECT temp.id, temp.img, temp.Title, temp.Description, temp.Target_Fund, temp.end_date, temp.metamask, temp.email, category.type
+        FROM temp
+        JOIN category ON temp.category_id = category.id ORDER BY temp.id DESC";
         $result = mysqli_query($conn, $sql);
          
         ?>
@@ -43,6 +45,7 @@
       <th scope="col">target fund</th>
       <th scope="col">end date</th>
       <th scope="col">meta mask</th>
+      <th scope="col">type</th>
       <th scope="col">upload</th>
       <th scope="col">deny</th>
       <th scope="col">mail</th>
@@ -52,14 +55,16 @@
   <tbody> 
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
     <tr>
+    <form method="post">
       <th scope="row"><input value="<?php echo $row["id"];?>" readonly name="id"></th>
       <td><input value="<?php echo $row["img"];?>" name="image"><img src="../image/<?php echo $row["img"];?>" class="card-img-top" alt="..." style="width:50%;" name="image"></center></td>
-      <td><input type="text"     value="<?php echo $row["Title"];?>" class="input" name="title" readonly id="title"></td>
-      <td><input type="text"     value="<?php echo $row["Description"];?>" name="description"readonly id="description"></td>
-      <td><input type="text"     value="<?php echo $row["Target_Fund"];?>" name="target"readonly id="target"></td>
-      <td><input type="text"     value="<?php echo $row["end_date"];?>" name="end" readonly id="end"></td>
-      <td><input type="text"     value="<?php echo $row["metamask"];?>" name="meta" readonly></td>
-      <td><input type="submit" class="btn btn-primary" name="submit" value="upload"></td>
+      <td><input type="text" value="<?php echo $row["Title"];?>" class="input" name="title" readonly id="title"></td>
+      <td><input type="text" value="<?php echo $row["Description"];?>" name="description"readonly id="description"></td>
+      <td><input type="text" value="<?php echo $row["Target_Fund"];?>" name="target"readonly id="target"></td>
+      <td><input type="text" value="<?php echo $row["end_date"];?>" name="end" readonly id="end"></td>
+      <td><input type="text" value="<?php echo $row["metamask"];?>" name="meta" readonly></td>
+      <td><input type="text" value="<?php echo $row["type"];?>" name="type" readonly></td>
+      <td><input type="submit" class="btn btn-primary"   name="submit" value="upload"></td>
       <td> <input type="submit"class="btn btn-primary" name="submit" value="deny"></td>
       <td> <a href="mailto:<?php echo $row["email"];?>" class="btn btn-primary"><i class="fa fa-envelope"></i></a></td>
       <td><button onclick="connectmetamask()" class="btn btn-primary">compile</button></td>
@@ -68,6 +73,7 @@
       <td><button onclick="senddata()" class="btn btn-primary">send data</button></td>!-->
       
     </tr>
+    </form>
     <?php } ?>
   </tbody>
    
@@ -76,7 +82,7 @@
         </form>
         <?php
     require("C:/xampp/htdocs/INF06/FundWings_Web_App/control/db-conn.php");
-        $sql = "SELECT `userID`, `name`, `email` FROM `users` WHERE user_types=2";
+        $sql = "SELECT `userID`, `name`, `email`,`user_types` FROM `users` WHERE user_types in(2,3)";
         $result = mysqli_query($conn, $sql);
         ?>
   <center> <table class="table table-sm table-dark" style="display:none;" id="table_user">
@@ -96,14 +102,18 @@
      ?>
   <tr>
       
-      <th scope="row"><?php echo $row["userID"];?></th>
-      <td> <?php echo $row["name"];?></td>
+      <td scope="row"><?php echo $row["userID"];?></td>
+      <td><?php echo $row["name"];?></td>
       <td><?php echo $row["email"];?></td>
-      <td> <?php echo"Donator"?>
+      <?php $role = ($row["user_types"] == 2) ? "donator" : "investor";?>
+      <td> <?php echo $role;?>
     </tr>
     <?php } ?>
   </tbody>
 </table>
+<form method="post">
+ <input type="submit" class="btn btn-outline-primary" value="send Email" name="submit">
+</form>
      </center>
            
         </div>

@@ -86,6 +86,16 @@
                         <input type="text" class="form-control" name="MetamaskAccount" placeholder="Enter Metamask Account" required>
                     </div>
                     <div class="form-group">
+                    <label class="form-label">category:</label>
+                    <br>
+                    <input type="radio" id="option1" name="options" value="1">
+                    <label for="option1">Sport</label><br>
+                    <input type="radio" id="option2" name="options" value="2">
+                    <label for="option2">Medcine</label><br>
+                    <input type="radio" id="option3" name="options" value="3">
+                    <label for="option3">charities</label><br>
+                    </div>
+                    <div class="form-group">
                         <label class="form-label">Addtional Email:</label>
                         <input type="text" class="form-control" name="addemail" placeholder="Enter the Email Address" required>
                     </div>
